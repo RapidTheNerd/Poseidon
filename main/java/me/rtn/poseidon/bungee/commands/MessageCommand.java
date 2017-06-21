@@ -42,10 +42,28 @@ public class MessageCommand extends Command {
                 return;
             }
             ProxiedPlayer target = ProxyServer.getInstance().getPlayer(targetPlayer);
+            if(checkForNullArgs(args, 1)){
+                player.sendMessage(MessageFormattings.BUNGEE_MESSAGE_INVALID_MESSAGE);
+                return;
+            }
+            String message = "";
+            for(int x = 1; x < args.length; x++){
+                if(message.equals("")){
+                    message = args[x];
+                } else {
+                    message = message +  " " + args[x];
+                }
+            }
+            target.sendMessage(MessageFormattings.BUNGEE_MESSAGE_FORMAT + message);
         }
     }
 
     private boolean checkForNullArgs(String[] args, int index){
-        
+        try {
+            String temp = args[index];
+            return false;
+        } catch (IndexOutOfBoundsException ex){
+            return true;
+        }
     }
 }
