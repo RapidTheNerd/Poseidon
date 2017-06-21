@@ -4,13 +4,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
+    private static Main spigotInstance;
     @Override
     public void onEnable() {
-
+        spigotInstance = this;
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        spigotInstance = this;
+    }
+
+    public static Main getSpigotInstance() {
+        return spigotInstance;
     }
 }
