@@ -1,4 +1,4 @@
-package me.rtn.poseidon.bungee;/*
+package me.rtn.poseidon.general.packets;/*
  * Jump
  * Copyright (C) 2017 RapidTheNerd
  *
@@ -16,26 +16,15 @@ package me.rtn.poseidon.bungee;/*
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import me.rtn.poseidon.bungee.commands.MessageCommand;
-import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.api.plugin.Plugin;
+import net.minecraft.server.v1_11_R1.IChatBaseComponent;
+import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
+import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 
-public class Proxy extends Plugin implements Listener {
-
-    private static Proxy proxyInstance;
-
-    @Override
-    public void onEnable(){
-        proxyInstance = this;
-
-        getProxy().getPluginManager().registerCommand(this, new MessageCommand());
-    }
-    @Override
-    public void onDisable(){
-        proxyInstance = this;
-    }
-
-    public static Proxy getProxyInstance() {
-        return proxyInstance;
+public class ActionBar {
+    public static void sendActionBar(Player player, String message){
+        IChatBaseComponent ibc = new IChatBaseComponent.ChatSerializer().a("{\"text\": \""+message+"\"}");
+        PacketPlayOutChat packet = new PacketPlayOutChat(ibc, (byte) 2);
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
 }
