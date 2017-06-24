@@ -16,5 +16,32 @@ package me.rtn.poseidon.spigot.managers;/*
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class WhitelistManager {
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class WhitelistManager implements Listener {
+
+    @EventHandler
+    private void allowToJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+    }
+
+
+    private void searchForUUID(String playerUUID) throws FileNotFoundException {
+
+        final Scanner scanner = new Scanner("whitelisted-users.txt");
+        while (scanner.hasNextLine()) {
+            final String lineFromFile = scanner.nextLine();
+            if (lineFromFile.contains(playerUUID)) {
+
+            }
+        }
+    }
 }
+
