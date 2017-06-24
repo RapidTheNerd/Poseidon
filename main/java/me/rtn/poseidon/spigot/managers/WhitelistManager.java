@@ -16,6 +16,7 @@ package me.rtn.poseidon.spigot.managers;/*
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import me.rtn.poseidon.spigot.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,21 +28,33 @@ import java.util.Scanner;
 public class WhitelistManager implements Listener {
 
     @EventHandler
-    private void allowToJoin(PlayerJoinEvent event) {
+    private void checkPlayerAccess(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
+        try {
+            searchForUUID(player.getUniqueId().toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
-
-
     private void searchForUUID(String playerUUID) throws FileNotFoundException {
 
         final Scanner scanner = new Scanner("whitelisted-users.txt");
         while (scanner.hasNextLine()) {
             final String lineFromFile = scanner.nextLine();
             if (lineFromFile.contains(playerUUID)) {
-
+               allowAccess();
+            } else if(!lineFromFile.contains(playerUUID)){
+                denyAccess();
             }
         }
+    }
+    private void denyAccess(){
+        Player player = (Player) Main.getSpigotInstance().getServer().getOnlinePlayers();
+        player.kickPlayer("You do not have access to join this server");
+    }
+    private void allowAccess(){
+        Player player = (Player) Main.getSpigotInstance().getServer().getOnlinePlayers();
+        player.setWhitelisted(true);
     }
 }
 
